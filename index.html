@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Look at this!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #scary-image {
+            max-width: 100%;
+            max-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        
+        #scary-image.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <img id="scary-image" src="scary-image.jpg" alt="Surprise!">
+    
+    <audio id="scary-sound" preload="auto">
+        <source src="scary-sound.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        window.onload = function() {
+            // Play sound
+            const sound = document.getElementById('scary-sound');
+            sound.volume = 1.0;
+            
+            // Try to play immediately (may be blocked by browser)
+            sound.play().catch(e => {
+                // If blocked, show a fake button to enable sound
+                const btn = document.createElement('button');
+                btn.textContent = 'Click to View Content';
+                btn.style.position = 'fixed';
+                btn.style.top = '50%';
+                btn.style.left = '50%';
+                btn.style.transform = 'translate(-50%, -50%)';
+                btn.style.padding = '15px 30px';
+                btn.style.fontSize = '20px';
+                btn.style.zIndex = '100';
+                document.body.appendChild(btn);
+                
+                btn.onclick = () => {
+                    sound.play();
+                    btn.remove();
+                };
+            });
+            
+            // Show image
+            const image = document.getElementById('scary-image');
+            image.classList.add('show');
+        };
+    </script>
+</body>
+</html>
